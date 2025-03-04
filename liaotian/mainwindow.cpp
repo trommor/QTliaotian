@@ -12,6 +12,7 @@
 #include <QSqlError>
 #include <QDateTime>
 #include <QMessageBox>  // 用于显示消息框
+#include "addfriend.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -38,23 +39,28 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 连接功能列表的点击信号到槽函数
     connect(ui->functionList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onFunctionItemClicked(QListWidgetItem*)));
-
-    // 初始化联系人列表
-    initializeFriendList();
-
     // 连接联系人列表的点击信号到槽函数
     connect(ui->tbwFriendList, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(onFriendItemClicked(QTableWidgetItem*)));
-
-    // 初始化控件
-    teChatEdit = ui->teChatEdit;  // 假设已经在 UI 文件中添加了 QTextEdit
-    pushButton = ui->pushButton;  // 假设已经在 UI 文件中添加了 QPushButton
-    teChatHistory = ui->teChatHistory;  // 假设已经在 UI 文件中添加了 QTextEdit（用于显示聊天记录）
 
     // 连接发送按钮的点击信号到槽函数
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(onSendButtonClicked()));
 
     // 连接回车键信号到槽函数
     connect(ui->teChatEdit, SIGNAL(textChanged()), this, SLOT(checkForEnterKey()));
+    // 连接搜索框的 returnPressed 信号到槽函数
+    connect(ui->searchLineEdit, SIGNAL(returnPressed()), this, SLOT(onSearchFriend()));
+    // 连接按钮的点击信号到槽函数
+    connect(ui->addfriendbutton, &QPushButton::clicked, this, &MainWindow::onAddFriendButtonClicked);
+    // 初始化联系人列表
+    initializeFriendList();
+
+
+    // 初始化控件
+    teChatEdit = ui->teChatEdit;  // 假设已经在 UI 文件中添加了 QTextEdit
+    pushButton = ui->pushButton;  // 假设已经在 UI 文件中添加了 QPushButton
+    teChatHistory = ui->teChatHistory;  // 假设已经在 UI 文件中添加了 QTextEdit（用于显示聊天记录）
+
+
 
     // 显示头像照片
     QPixmap pix("E:\\QT\\build-liaotian-Desktop_Qt_5_14_2_MinGW_64_bit-Debug\\1.jpg");
@@ -92,13 +98,13 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "创建表失败：" << query.lastError().text();
     }
 
-    // 连接搜索框的 returnPressed 信号到槽函数
-    connect(ui->searchLineEdit, SIGNAL(returnPressed()), this, SLOT(onSearchFriend()));
+
 }
 
 MainWindow::~MainWindow() {
     delete ui;
 }
+
 
 void MainWindow::checkForEnterKey() {
     if (ui->teChatEdit->toPlainText().endsWith("\n")) {  // 检测回车键
@@ -259,4 +265,9 @@ void MainWindow::onSearchFriend() {
             ui->tbwFriendList->setItem(ui->tbwFriendList->rowCount() - 1, 0, new QTableWidgetItem(friends[i]));  // 设置联系人名称
         }
     }
+}
+void MainWindow::onAddFriendButtonClicked()
+{
+     addfriend *addFriendWindow = new addfriend();
+     addFriendWindow->show();  // 显示 addfriend 窗口
 }

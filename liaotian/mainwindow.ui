@@ -272,7 +272,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="addFriendButton">
+   <widget class="QPushButton" name="addfriendbutton">
     <property name="geometry">
      <rect>
       <x>260</x>

@@ -47,13 +47,13 @@ Widget::~Widget()
 void Widget::on_logobtBt_clicked()
 {
     // 获取用户名和密码
-    QString username = ui->usernameLineEdit->text();
-    QString password = ui->passwordLineEdit->text();
+    QString account = ui->usernameLineEdit->text().trimmed();
+    QString password = ui->passwordLineEdit->text().trimmed();
 
     // 查询数据库
     QSqlQuery query;
-    query.prepare("SELECT password FROM users WHERE username = :username");
-    query.bindValue(":username", username);
+    query.prepare("SELECT password FROM users WHERE account = :account");
+    query.bindValue(":account", account);
 
     if (!query.exec()) {
         QMessageBox::warning(this, "数据库错误", "查询失败：" + query.lastError().text());
@@ -64,7 +64,7 @@ void Widget::on_logobtBt_clicked()
     if (query.next()) {
         QString storedPassword = query.value(0).toString();
         if (storedPassword == password) {
-            QMessageBox::information(this, "登录成功", "欢迎回来，" + username + "!");
+            QMessageBox::information(this, "登录成功", "欢迎回来，" + account + "!");
 
             // 创建并显示 MainWindow
             MainWindow *mainWindow = new MainWindow();
@@ -86,7 +86,7 @@ bool Widget::initializeDatabase()
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("localhost");      // 数据库主机名
     db.setPort(3306);                // 数据库端口
-    db.setDatabaseName("qt_login");   // 数据库名称
+    db.setDatabaseName("my_database");   // 数据库名称
     db.setUserName("root");           // 数据库用户名
     db.setPassword("1804");            // 数据库密码
 
@@ -102,8 +102,13 @@ bool Widget::initializeDatabase()
 
 void Widget::on_gotoRegisterButton_clicked()
 {
+    // 防抖：如果注册页面已经显示，则不再创建新实例
+    if (registerWidget && registerWidget->isVisible()) {
+        return;
+    }
+
     // 创建并显示注册页面
-    RegisterWidget *registerWidget = new RegisterWidget();
+    registerWidget = new RegisterWidget();
     registerWidget->show();
 
     // 隐藏当前登录页面

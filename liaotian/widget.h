@@ -2,6 +2,10 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include "registerwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -16,14 +20,13 @@ public:
     ~Widget();
 
 private slots:
-
-
-    void on_logobtBt_clicked();// 声明登录按钮的槽函数
-
+    void on_logobtBt_clicked();
     void on_gotoRegisterButton_clicked();
-    bool initializeDatabase();
 
 private:
     Ui::Widget *ui;
+    RegisterWidget *registerWidget = nullptr; // 保存注册页面实例
+    bool initializeDatabase();
 };
+
 #endif // WIDGET_H

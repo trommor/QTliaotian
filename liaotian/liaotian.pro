@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addfriend.cpp \
     chatpage.cpp \
     contactpage.cpp \
     main.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
     widget.cpp
 
 HEADERS += \
+    addfriend.h \
     chatpage.h \
     contactpage.h \
     mainwindow.h \
@@ -33,6 +35,7 @@ HEADERS += \
     widget.h
 
 FORMS += \
+    addfriend.ui \
     mainwindow.ui \
     registerwidget.ui \
     widget.ui

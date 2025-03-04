@@ -17,9 +17,11 @@ public:
 
 private slots:
     void on_registerButton_clicked();  // 注册按钮的槽函数
-
+     QString generateRandomAccount(); // 声明生成随机账户的函数
+     //bool isUsernameUnique(const QString &account);  // 声明函数
 private:
     Ui::RegisterWidget *ui;
+
 };
 
 #endif // REGISTERWIDGET_H
